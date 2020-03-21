@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 import uuid # Required for unique book instances
+from django.contrib.auth.models import User
+from datetime import date
 # Create your models here.
 
 class Genre(models.Model):
@@ -60,6 +62,7 @@ class BookInstance(models.Model):
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),
@@ -76,30 +79,19 @@ class BookInstance(models.Model):
         help_text='Book availability',
     )
 
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+
     class Meta:
         ordering = ['due_back']
+        permissions = (('can_mark_returned', 'Set book as returned'),)
 
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.book.title})'
 
-# class Author(models.Model):
-#     """Model representing an author."""
-#     first_name = models.CharField(max_length=100)
-#     last_name = models.CharField(max_length=100)
-#     date_of_birth = models.DateField(null=True, blank=True)
-#     date_of_death = models.DateField('Died', null=True, blank=True)
-
-#     class Meta:
-#         ordering = ['last_name', 'first_name']
-
-#     def get_absolute_url(self):
-#         """Returns the url to access a particular author instance."""
-#         return reverse('author-detail', kwargs={'pk':str(self.id)})# args=[str(self.id)])
-
-#     def __str__(self):
-#         """String for representing the Model object."""
-#         return f'{self.last_name}, {self.first_name}'
 
 
 class Author(models.Model):
@@ -114,6 +106,8 @@ class Author(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
+        # author = Author.objects.get(pk=pk)
+        # return reverse('author-detail', args=pk)
         return reverse('author-detail', args=[str(self.id)])
 
     def __str__(self):
