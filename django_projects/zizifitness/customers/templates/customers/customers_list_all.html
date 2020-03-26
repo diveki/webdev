@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+{% if perms.customers.can_see_customers %}
+
+    <h1>All Customers</h1>
+
+    {% if person_list %}
+        <ul>
+
+        {% for person in person_list %} 
+            <li><a href="{{ person.get_absolute_url }}">{{person}}</a> {{ person.get_absolute_url }} - {{person.user }}</li>
+        {% endfor %}
+        </ul>
+
+    {% else %}
+        <p>There are no books borrowed.</p>
+    {% endif %}
+{% else %}
+  <h1>You do not have permission to see the customer list!</h1>
+{% endif %}
+{% endblock %}

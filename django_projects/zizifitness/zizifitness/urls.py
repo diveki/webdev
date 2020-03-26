@@ -15,8 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('customers/', include('customers.urls'))
+    path('', views.index, name='index'),
+    path('customers/', include('customers.urls', namespace='customers')),
+    path('signup/', views.signup_view, name="signup"),
+    path('edit_profile/', views.profile, name="edit-profile"),
+    
+]
+
+from django.views.generic import RedirectView
+# urlpatterns += [
+#     path('', RedirectView.as_view(url='customers/', permanent=True)),
+# ]
+
+#Add Django site authentication urls (for login, logout, password management)
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
