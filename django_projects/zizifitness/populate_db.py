@@ -1,4 +1,5 @@
 from customers.models import *
+from accounting.models import *
 from django.contrib.auth.models import User, Group
 from faker import Faker
 
@@ -95,4 +96,68 @@ def create_employer():
     user.person.date_of_birth = dob
     user.groups.add(gr)
     user.save()
+
+def create_category_type():
+    names = ['Speed Fitness', 'InfraShape', 'Herbalife']
+    for nam in names:
+        ph = CategoryType.objects.create(
+            name = nam
+        )
+        ph.save()
+
+def create_income_categories():
+    name_map = {
+        'Single Speed Fitness Training': ['Speed Fitness', 950, 'RSD'], 
+        'Probe Speed Fitness': ['Speed Fitness', 500, 'RSD'],
+        '9 Session Speed Fitness': ['Speed Fitness', 7200, 'RSD'],
+        '4 Session Speed Fitness': ['Speed Fitness', 3400, 'RSD'],
+        'Single Infrashape Horizontal': ['InfraShape', 1300, 'RSD'],
+        'Probe Infrashape': ['InfraShape', 700, 'RSD'],
+        '5 Session Infrashape': ['InfraShape', 6000, 'RSD'],
+        '10 Session Infrashape': ['InfraShape', 11000, 'RSD'],
+        'Herbalife shake SRB': ['Herbalife', 4000, 'RSD'],
+        'Herbalife shake HUN': ['Herbalife', 4400, 'RSD'],
+        'Herba protein csoki': ['Herbalife', 150, 'RSD'],
+        'Herba tea': ['Herbalife', 2800, 'RSD'],
+        'Rost tabletta': ['Herbalife', 2400, 'RSD'],
+        'Herba maszk': ['Herbalife', 2000, 'RSD'],
+    }
+    
+    for key, value in name_map.items():
+        t=CategoryType.objects.get(name=value[0])
+        ph = IncomeCategories.objects.create(
+            name = key,
+            category_type = t,
+            unit_price = value[1],
+            currency = value[2]
+        )
+        ph.save()
+
+def create_expense_categories():
+    name_map = {
+        'Biotech feherje shake': 'Speed Fitness', 
+        'Alsoruha': 'Speed Fitness',
+        'Speedes rucik': 'Speed Fitness',
+        'Folia nadrag': 'InfraShape',
+        'Zsiregeto krem': 'InfraShape',
+        'Herba tea': 'Herbalife',
+        'Herba maszk': 'Herbalife',
+        'Herba csomag': 'Herbalife',
+        'Mosopor': 'Other',
+        'Oblito': 'Other',
+        'Tisztitoszer': 'Other',
+        'Rezsi': 'Other',
+        'Konyvelo': 'Other',
+        'Sokolj': 'Other',
+        'Szereles': 'Other',
+    }
+    
+    for key, value in name_map.items():
+        t=CategoryType.objects.get(name=value)
+        ph = ExpenseCategories.objects.create(
+            name = key,
+            category_type = t
+        )
+        ph.save()
+
 

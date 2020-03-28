@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Category Type List</h1>
+
+{% if categorytype_list %}
+  <ul>
+
+  {% for categorytype in categorytype_list %}
+    <li>
+      {{ categorytype }} - 
+      <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:categorytype_update' categorytype.id %}">Update</a>
+      <a type="button" style="margin:5px" class="btn btn-danger btn-sm" href="{% url 'accounting:categorytype_delete' categorytype.id %}">Delete</a>
+    </li>
+  {% endfor %}
+
+ </ul>
+{% else %}
+  <p>There are no authors available.</p>
+{% endif %}
+        
+        
+        
+{% endblock %}

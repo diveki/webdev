@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'customers',
     'zizifitness',
     'crispy_forms',
+    'accounting',
 ]
 
 MIDDLEWARE = [

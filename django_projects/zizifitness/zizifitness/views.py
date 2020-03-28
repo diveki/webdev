@@ -67,45 +67,48 @@ def signup_view(request):
 
 # the decorator: To access the profile page, users should login
 @login_required
-def profile(request):
-    if request.method == 'POST':
-        user_form = UserUpdateForm(request.POST, instance=request.user)
-        person_form = PersonUpdateForm(request.POST, instance=request.user.person)
+def profile(request, **kwargs):
+    if request.user.person.slug == kwargs.get('slug'):
+        if request.method == 'POST':
+            user_form = UserUpdateForm(request.POST, instance=request.user)
+            person_form = PersonUpdateForm(request.POST, instance=request.user.person)
 
-        if user_form.is_valid() and person_form.is_valid():
-            user = user_form.save()
-            # person_form.save()
-            print('I am here')
+            if user_form.is_valid() and person_form.is_valid():
+                user = user_form.save()
+                # person_form.save()
+                print('I am here')
 
-            user.refresh_from_db()  # load the profile instance created by the signal
-            # record date of birth
-            user.person.date_of_birth = person_form.cleaned_data.get('date_of_birth')
-            # record gender
-            user.person.gender = person_form.cleaned_data.get('gender')
-            # record address
-            adr = Address.objects.create(
-                line1 = person_form.cleaned_data.get('address_line1'),
-                city = person_form.cleaned_data.get('address_city'),
-                zip_code = person_form.cleaned_data.get('address_post_code'),
-                country = person_form.cleaned_data.get('address_country'))
-            user.person.address = adr
-            #record phone number
-            ph = PhoneNumber.objects.create(
-                country_code = person_form.cleaned_data.get('phone_country'),
-                phone_number = person_form.cleaned_data.get('phonenumber')
-            )
-            user.person.phone_number = ph
-            user.save()
-            messages.success(request, f'Your account has been updated!')
-            return redirect(request.user.person.get_absolute_url())
+                user.refresh_from_db()  # load the profile instance created by the signal
+                # record date of birth
+                user.person.date_of_birth = person_form.cleaned_data.get('date_of_birth')
+                # record gender
+                user.person.gender = person_form.cleaned_data.get('gender')
+                # record address
+                adr = Address.objects.create(
+                    line1 = person_form.cleaned_data.get('address_line1'),
+                    city = person_form.cleaned_data.get('address_city'),
+                    zip_code = person_form.cleaned_data.get('address_post_code'),
+                    country = person_form.cleaned_data.get('address_country'))
+                user.person.address = adr
+                #record phone number
+                ph = PhoneNumber.objects.create(
+                    country_code = person_form.cleaned_data.get('phone_country'),
+                    phone_number = person_form.cleaned_data.get('phonenumber')
+                )
+                user.person.phone_number = ph
+                user.save()
+                messages.success(request, f'Your account has been updated!')
+                return redirect(request.user.person.get_absolute_url())
 
+        else:
+            user_form = UserUpdateForm(instance=request.user)
+            person_form = PersonUpdateForm(instance=request.user.person)
+
+        context = {
+            'u_form': user_form,
+            'p_form': person_form
+        }
+
+        return render(request, 'registration/edit_profile.html', context)
     else:
-        user_form = UserUpdateForm(instance=request.user)
-        person_form = PersonUpdateForm(instance=request.user.person)
-
-    context = {
-        'u_form': user_form,
-        'p_form': person_form
-    }
-
-    return render(request, 'registration/edit_profile.html', context)
+        return HttpResponse("You do not have the permission to see the requested page.")

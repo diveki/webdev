@@ -26,6 +26,10 @@
             <li><a href="{% url 'login' %}">Login</a></li>
             <li><a href="{% url 'signup' %}">Sign Up</a></li>
           {% endif %}
+          <hr>
+          {% if perms.customers.can_see_own_financials %}
+            <li><a href="{% url 'accounting:accounting' %}">Accounting</a></li>
+          {% endif %}
         </ul>
      {% endblock %}
       </div>

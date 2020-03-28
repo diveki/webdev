@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+  <h1>Welcome to Zizi fitness accounting</h1>
+
+  {% if perms.accounting.add_categorytype %}
+  <div class="row">
+    <a type="button" style="margin:5px" class="btn btn-info" href="{% url 'accounting:categorytype_list' %}">Show Category Types</a>
+    <a type="button" style="margin:5px" class="btn btn-info" href="{% url 'accounting:categorytype_create' %}">Add Category Type</a>
+</div>
+  {% endif %}
+{% endblock %}

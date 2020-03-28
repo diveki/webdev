@@ -93,13 +93,19 @@ class Customer(models.Model):
     pass
 
 class Physical_Appearance(models.Model):
-    weight = models.FloatField()
+    weight = models.FloatField(null=True, blank=True)
     date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    chest = models.FloatField()
-    biceps = models.FloatField()
-    hip = models.FloatField()
-    tigh = models.FloatField()
-    
+    chest = models.FloatField(null=True, blank=True)
+    biceps = models.FloatField(null=True, blank=True)
+    hip = models.FloatField(null=True, blank=True)
+    tigh = models.FloatField(null=True, blank=True)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs): # new
+        if not self.slug:
+            self.slug = slugify(self.user.get_full_name())
+        return super().save(*args, **kwargs)
+
 class Body_Analysis(models.Model):
     pass

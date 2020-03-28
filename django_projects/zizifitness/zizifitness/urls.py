@@ -22,8 +22,8 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('customers/', include('customers.urls', namespace='customers')),
     path('signup/', views.signup_view, name="signup"),
-    path('edit_profile/', views.profile, name="edit-profile"),
-    
+    path('customers/<slug:slug>/edit_profile/', views.profile, name="edit-profile"),
+    path('accounting/', include('accounting.urls', namespace='accounting')),
 ]
 
 from django.views.generic import RedirectView

@@ -54,12 +54,19 @@ class PersonUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         current_user = kwargs.pop('instance')
         super(PersonUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['address_line1'].initial = current_user.address.line1
-        self.fields['address_city'].initial = current_user.address.city
-        self.fields['address_post_code'].initial = current_user.address.zip_code
-        self.fields['address_country'].initial = current_user.address.country
-        self.fields['phone_country'].initial = current_user.phone_number.country_code
-        self.fields['phonenumber'].initial = current_user.phone_number.phone_number
+        def check_if_nonetype(x, atr):
+            print(x)
+            if x is None:
+                return ''
+            else:
+                return getattr(x, atr)
+
+        self.fields['address_line1'].initial = check_if_nonetype(current_user.address, 'line1')
+        self.fields['address_city'].initial = check_if_nonetype(current_user.address, 'city')
+        self.fields['address_post_code'].initial = check_if_nonetype(current_user.address, 'zip_code')
+        self.fields['address_country'].initial = check_if_nonetype(current_user.address, 'country')
+        self.fields['phone_country'].initial = check_if_nonetype(current_user.phone_number, 'country_code')
+        self.fields['phonenumber'].initial = check_if_nonetype(current_user.phone_number, 'phone_number')
         self.fields['date_of_birth'].initial = current_user.date_of_birth
         self.fields['gender'].initial = current_user.gender
         

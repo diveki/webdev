@@ -5,6 +5,10 @@
 
     {% if person == request.user.person or perms.customers.can_see_customers %}
     <h1>{{ person }}</h1>
+    <div class="row">
+        <a type="button" style="margin:5px" class="btn btn-info" href="{% url 'edit-profile' person.slug %}">Edit Profile</a>
+        <a type="button" style="margin:5px" class="btn btn-info" href="{% url 'customers:input-measurements' person.slug %}">Add data</a>
+    </div>
     <h6><strong>First name:</strong> {{person.first_name}}</h6>
     <h6><strong>Last name:</strong> {{person.last_name}}</h6>
     <h6><strong>Email:</strong> {{person.user.email}}</h6>

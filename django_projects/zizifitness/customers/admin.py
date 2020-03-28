@@ -27,7 +27,7 @@ class AddressAdmin(admin.ModelAdmin):
 @admin.register(Physical_Appearance)
 class Physical_AppearanceAdmin(admin.ModelAdmin):
     list_display = ('user', 'date', 'weight')
-    fields = ['user', 'date', 'weight', 'chest', 'tigh', 'hip', 'biceps']
+    fields = ['user', 'date', 'weight', 'chest', 'tigh', 'hip', 'biceps', 'slug']
 
 # admin.site.register(Author, AuthorAdmin)
 # admin.site.register(Genre)
