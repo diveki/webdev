@@ -20,10 +20,10 @@ class ExpenseCategoriesAdmin(admin.ModelAdmin):
 
 @admin.register(IncomeItems)
 class IncomeItemsAdmin(admin.ModelAdmin):
-    list_display = ('client', 'instructor', 'item', 'date', 'net_amount', 'vat', 'brut_amount')
-    fields = ['client', 'instructor', 'item', 'date', 'net_amount', 'vat', 'brut_amount']
+    list_display = ('client', 'instructor', 'item', 'quantity', 'date', 'net_amount', 'vat', 'brut_amount')
+    fields = ['client', 'instructor', 'item', 'quantity', 'date', 'net_amount', 'vat', 'brut_amount']
 
 @admin.register(ExpenseItems)
 class ExpenseItemsAdmin(admin.ModelAdmin):
-    list_display = ('client', 'instructor', 'item', 'date', 'net_amount', 'vat', 'brut_amount')
-    fields = ['client', 'instructor', 'item', 'date', 'net_amount', 'vat', 'brut_amount']
+    list_display = ('instructor', 'item', 'quantity', 'date', 'net_amount', 'vat', 'brut_amount')
+    fields = ['instructor', 'item', 'quantity', 'date', 'net_amount', 'vat', 'brut_amount']

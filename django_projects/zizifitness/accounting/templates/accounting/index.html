@@ -6,8 +6,25 @@
 
   {% if perms.accounting.add_categorytype %}
   <div class="row">
-    <a type="button" style="margin:5px" class="btn btn-info" href="{% url 'accounting:categorytype_list' %}">Show Category Types</a>
-    <a type="button" style="margin:5px" class="btn btn-info" href="{% url 'accounting:categorytype_create' %}">Add Category Type</a>
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:categorytype_list' %}">Show Category Types</a>
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:categorytype_create' %}">Add Category Type</a>
+</div>
+<div class="row">
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:incomecategories_list' %}">Show Income Categories</a>
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:incomecategories_create' %}">Add Income Category Type</a>
+</div>
+<div class="row">
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:expensecategories_list' %}">Show Expense Categories</a>
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:expensecategories_create' %}">Add Expense Category Type</a>
+</div>
+{% endif %}
+
+{% if perms.accounting.can_see_own_financials %}
+<div class="row">
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:incomeitems_list' %}">Income Items List</a>
+</div>
+<div class="row">
+    <a type="button" style="margin:5px" class="btn btn-info btn" href="{% url 'accounting:incomeitems_create' %}">Add Income Items </a>
 </div>
   {% endif %}
 {% endblock %}

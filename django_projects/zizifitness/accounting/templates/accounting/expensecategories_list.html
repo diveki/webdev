@@ -1,0 +1,32 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Expense Category List</h1>
+
+{% if expensecategories_list %}
+  
+  {% for incomecategory in expensecategories_list %}
+    <ul class="list-group">
+      <div class="list-group">
+        {% if forloop.counter|divisibleby:2 %}
+          <a href="{% url 'accounting:expensecategories_update' incomecategory.id %}" class="list-group-item list-group-item-action">{{ incomecategory }}</a>
+        {% else %}
+          <a href="{% url 'accounting:expensecategories_update' incomecategory.id %}" class="list-group-item list-group-item-secondary">{{ incomecategory }}</a>
+        {% endif %}
+            
+      </div>
+    </ul>
+    
+  {% endfor %}
+
+{% else %}
+  <p>There are no expense categories available.</p>
+{% endif %}
+        
+        
+        
+{% endblock %}
+
+

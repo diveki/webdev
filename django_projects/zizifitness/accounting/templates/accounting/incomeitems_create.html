@@ -1,0 +1,78 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="content-section">
+        <form  method="POST" enctype = "multipart/form-data">{% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Create income item </legend>
+                {{ incomeitem_form.date|as_crispy_field }}
+                {{ incomeitem_form.client|as_crispy_field }}
+                {{ incomeitem_form.instructor|as_crispy_field }}
+                {{ incomeitem_form.item|as_crispy_field }}
+                {{ incomecategory_form.unit_price|as_crispy_field }}
+                {{ incomeitem_form.quantity|as_crispy_field }}
+                {{ incomeitem_form.net_amount|as_crispy_field }}
+                {{ incomeitem_form.vat|as_crispy_field }}
+                {{ incomeitem_form.brut_amount|as_crispy_field }}
+
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+              
+            </div>
+        </form>
+        {% if form.instance.id %}
+        <a type="button" style="margin:5px" class="btn btn-danger btn-sm" href="{% url 'accounting:incomeitems_delete' form.instance.id %}">Delete</a>
+        {% endif %}
+
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type='text/javascript'>
+    
+    var drop = document.getElementById('id_item')
+    drop.addEventListener('change', function(event) {
+        // get value of id_item option
+        var op = document.getElementById('id_item');
+        var uptag = document.getElementById('id_unit_price');
+        var tt = op.selectedOptions[0].text;
+        // find number in it
+        var reg = /\d+\.\d+/;
+        var up = tt.match(reg)[0];
+        // get id of unit_price and set its value to up
+        uptag.value = up;
+        var qty = document.getElementById('id_quantity');
+        qty.value = 1;
+        var net = document.getElementById('id_net_amount');
+        net.value = qty.value * uptag.value;
+        var vat = document.getElementById('id_vat');
+        var brut = document.getElementById('id_brut_amount');
+        brut.value = net.value*(1 + vat.value/100);
+    }, false);
+
+    var qty = document.getElementById('id_quantity')
+    qty.addEventListener('change', function(event) {
+        // get value of id_item option
+        var qty = document.getElementById('id_quantity');
+        var uptag = document.getElementById('id_unit_price');
+        var net = document.getElementById('id_net_amount');
+        // find number in it
+        // get value of quantity
+        net.value = qty.value * uptag.value;
+        var vat = document.getElementById('id_vat');
+        var brut = document.getElementById('id_brut_amount');
+        brut.value = net.value*(1 + vat.value/100);
+    }, false);
+
+    var vat = document.getElementById('id_vat')
+    vat.addEventListener('change', function(event) {
+        var net = document.getElementById('id_net_amount');
+        var vat = document.getElementById('id_vat');
+        var brut = document.getElementById('id_brut_amount');
+        brut.value = net.value*(1 + vat.value/100);
+    }, false);
+    </script>
+{% endblock content %}
+
+

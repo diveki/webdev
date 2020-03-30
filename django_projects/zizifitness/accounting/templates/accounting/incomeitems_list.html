@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Income Items List</h1>
+
+{% if incomeitems_list %}
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Date</th>
+        <th scope="col">Instructor</th>
+        <th scope="col">Client</th>
+        <th scope="col">Item Name</th>
+        <th scope="col">Item Category</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Unit Price</th>
+        <th scope="col">Net Amount</th>
+        <th scope="col">VAT</th>
+        <th scope="col">Brut Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+    {% for incomeitem in incomeitems_list %}
+            <tr>
+                <th scope="row">
+                    <a href="{% url 'accounting:incomeitems_update' incomeitem.id %}">
+                        {{ incomeitem.id }}
+                    </a>
+                </th>
+                <td>{{ incomeitem.date|date:"Y-M-d" }}</td>
+                <td>{{ incomeitem.instructor.get_full_name }}</td>
+                <td>{{ incomeitem.client.get_full_name }}</td>
+                <td>{{ incomeitem.item.name }}</td>
+                <td>{{ incomeitem.item.category_type.name }}</td>
+                <td>{{ incomeitem.quantity }}</td>
+                <td>{{ incomeitem.item.currency }} {{ incomeitem.item.unit_price }}</td>
+                <td>{{ incomeitem.net_amount }}</td>
+                <td>{{ incomeitem.vat }}</td>
+                <td>{{ incomeitem.brut_amount }}</td>
+            </tr>
+        </a>
+    
+  {% endfor %}
+</tbody>
+</table>
+
+{% else %}
+  <p>There are no expense categories available.</p>
+{% endif %}
+        
+        
+        
+{% endblock %}
+
+
