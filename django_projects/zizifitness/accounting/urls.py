@@ -38,3 +38,10 @@ urlpatterns += [
     path('incomeitems/<int:pk>/update/', views.IncomeItemsUpdate.as_view(), name='incomeitems_update'),
     path('incomeitems/<int:pk>/delete/', views.IncomeItemsDelete.as_view(), name='incomeitems_delete'),
 ]
+
+## add daily income list url
+
+urlpatterns += [
+    path('dailyincome/list/', views.daily_income_aggregation_view, name='daily_income'),
+    path('monthlyincome/list/', views.monthly_income_aggregation_view, name='monthly_income'),
+]

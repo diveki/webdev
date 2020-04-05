@@ -112,3 +112,6 @@ def profile(request, **kwargs):
         return render(request, 'registration/edit_profile.html', context)
     else:
         return HttpResponse("You do not have the permission to see the requested page.")
+
+def error_html(request):
+    return render(request, 'error.html')
