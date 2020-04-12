@@ -27,3 +27,15 @@ class IncomeItemsAdmin(admin.ModelAdmin):
 class ExpenseItemsAdmin(admin.ModelAdmin):
     list_display = ('instructor', 'item', 'quantity', 'date', 'net_amount', 'vat', 'brut_amount')
     fields = ['instructor', 'item', 'quantity', 'date', 'net_amount', 'vat', 'brut_amount']
+
+@admin.register(Salary)
+class SalaryAdmin(admin.ModelAdmin):
+    list_display = ('id','date', 'instructor', 'item', 'salary', 'income_item')
+    fields = ['date', 'instructor', 'item', 'salary', 'income_item']
+
+
+@admin.register(SalaryDistribution)
+class SalaryDistributionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'instructor', 'item',  'bonus', 'bonus_type')
+    fields = ['instructor', 'item',  'bonus', 'bonus_type']
+

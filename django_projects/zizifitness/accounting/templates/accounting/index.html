@@ -5,6 +5,9 @@
   <h1>Welcome to Zizi fitness accounting</h1>
 
   {% if perms.accounting.add_categorytype %}
+
+  <h4>Settings</h4>
+
   <div class="row">
     <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:categorytype_list' %}">Show Category Types</a>
     <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:categorytype_create' %}">Add Category Type</a>
@@ -17,17 +20,43 @@
     <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:expensecategories_list' %}">Show Expense Categories</a>
     <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:expensecategories_create' %}">Add Expense Category Type</a>
 </div>
+<div class="row">
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:salarydistribution_list' %}">Show Salary Distribution</a>
+    <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:salarydistribution_create' %}">Add Salary Distribution</a>
+</div>
+<hr>
 {% endif %}
 
 {% if perms.accounting.can_see_own_financials %}
+
+<h4>Incomes and Expenses</h4>
+
 <div class="row">
     <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:incomeitems_list' %}">Income Items List</a>
+    {% if perms.accounting.can_see_all_financials %}
+        <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:expenseitems_list' %}">Expense Items List</a>
+    {% endif %}
 </div>
 <div class="row">
     <a type="button" style="margin:5px" class="btn btn-info btn" href="{% url 'accounting:incomeitems_create' %}">Add Income Items </a>
+    {% if perms.accounting.can_see_all_financials %}
+        <a type="button" style="margin:5px" class="btn btn-info btn-sm" href="{% url 'accounting:expenseitems_create' %}">Add Expense Items</a>
+    {% endif %}
 </div>
 <div class="row">
     <a type="button" style="margin:5px" class="btn btn-info btn" href="{% url 'accounting:daily_income' %}"> Daily Income List </a>
+    <a type="button" style="margin:5px" class="btn btn-info btn" href="{% url 'accounting:monthly_income' %}"> Monthly Income List </a>
 </div>
+
+<hr>
+
+<h4>Summary</h4>
+
+<div class="row">
+    <a type="button" style="margin:5px" class="btn btn-info btn" href="{% url 'accounting:salary_list' %}"> Salary List </a>
+    <a type="button" style="margin:5px" class="btn btn-info btn" href="{% url 'accounting:salary_monthly' %}"> Monthly Salary </a>
+</div>
+
+
   {% endif %}
 {% endblock %}

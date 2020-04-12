@@ -59,8 +59,6 @@ class Person(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
-        # import pdb
-        # pdb.set_trace()
         return reverse('customers:person-detail', args=[str(self.slug)])
     
     def save(self, *args, **kwargs): # new

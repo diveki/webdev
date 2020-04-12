@@ -1,0 +1,54 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Salary List</h1>
+
+{% if salary_list %}
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Date</th>
+        <th scope="col">Income Item ID</th>
+        <th scope="col">Instructor</th>
+        <th scope="col">Item Name</th>
+        <th scope="col">Item Category</th>
+        <th scope="col">Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+    {% for incomeitem in salary_list %}
+            <tr>
+                <th scope="row">
+                    <a href="{% url 'accounting:salary_update' incomeitem.id %}">
+                        {{ incomeitem.id }}
+                    </a>
+                </th>
+                <td>{{ incomeitem.date|date:"Y-M-d" }}</td>
+                <td>
+                    <a href="{% url 'accounting:incomeitems_update' incomeitem.income_item.id %}">{{ incomeitem.income_item.id }}</a>
+                </td>
+                <td>{{ incomeitem.instructor.get_full_name }}</td>
+                <td>{{ incomeitem.item.name }}</td>
+                <td>{{ incomeitem.item.category_type.name }}</td>
+                <td>{{ incomeitem.item.currency }} {{ incomeitem.salary }}</td>
+            </tr>
+        </a>
+    
+  {% endfor %}
+</tbody>
+</table>
+
+{% else %}
+  <p>There are no salaries available.</p>
+{% endif %}
+        
+        
+        
+{% endblock %}
+
+

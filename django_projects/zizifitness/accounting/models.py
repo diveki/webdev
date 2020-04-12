@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.defaultfilters import slugify
+from django.utils.timezone import now as djnow
 
 from decimal import Decimal
 import datetime
@@ -57,7 +58,7 @@ class ExpenseCategories(models.Model):
 class IncomeItems(models.Model):
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_related')
     instructor = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(null=True, blank=True, default=datetime.date.today())
+    date = models.DateField(null=True, blank=True, default=djnow())
     item = models.ForeignKey(IncomeCategories, on_delete=models.CASCADE)
     quantity = models.IntegerField(default='0')
     net_amount = models.DecimalField(max_digits=8, decimal_places=2, blank=False, default=Decimal('0.00'))
@@ -69,15 +70,15 @@ class IncomeItems(models.Model):
         permissions = (('can_see_all_financials', 'Show all financials'), ('can_see_own_financials', 'Show own financials'))
 
     def get_absolute_url(self):
-        return reverse('incomeitems_update', kwargs={'pk': self.pk})
+        return reverse('accounting:incomeitems_update', kwargs={'pk': self.pk})
     
     def __str__(self):
         return f'Income Item {self.item.name}'
 
 
 class ExpenseItems(models.Model):
-    instructor = models.OneToOneField(User, on_delete=models.CASCADE)
-    date = models.DateField(null=True, blank=True, default=datetime.date.today())
+    instructor = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(null=True, blank=True, default=djnow())
     item = models.ForeignKey(ExpenseCategories, on_delete=models.CASCADE)
     quantity = models.IntegerField(default='0')
     net_amount = models.DecimalField(max_digits=8, decimal_places=2, blank=False, default=Decimal('0.00'))
@@ -90,3 +91,43 @@ class ExpenseItems(models.Model):
     
     def __str__(self):
         return f'Expense Item {self.item.name}'
+
+
+class SalaryDistribution(models.Model):
+    instructor = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(IncomeCategories, on_delete=models.CASCADE)
+    bonus = models.DecimalField(max_digits=8, decimal_places=2, blank=False, default=Decimal('0.00'))
+    
+    bonus_type_map = (
+        ('F','Fixed'),
+        ('R','Ratio'),
+    )
+    bonus_type = models.CharField(
+        max_length=1,
+        choices=bonus_type_map,
+        blank=False,
+        default='F',
+    )
+
+    class Meta:
+        ordering = ['instructor', 'item']
+        
+    def __str__(self):
+        return f'{self.instructor.get_full_name()}, {self.item.name}, {self.item.category_type.name}, {self.bonus_type}, {self.bonus}'
+
+
+class Salary(models.Model):
+    instructor = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(null=True, blank=False, default=djnow())
+    item = models.ForeignKey(IncomeCategories, on_delete=models.CASCADE)
+    income_item = models.ForeignKey(IncomeItems, on_delete=models.CASCADE)
+    salary = models.DecimalField(max_digits=8, decimal_places=2, blank=False, default=Decimal('0.00'))
+
+    class Meta:
+        ordering = ['-id', 'date', 'instructor', 'item']
+
+    def get_absolute_url(self):
+        return reverse('salary', kwargs={'pk': self.pk})
+    
+    def __str__(self):
+        return f'Salary {self.instructor.get_full_name()}, {self.date}, {self.item.name}, {self.salary}, IncomeItem_id: {self.income_item.id}'

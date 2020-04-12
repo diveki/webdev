@@ -1,0 +1,71 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" enctype = "multipart/form-data">{% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Add a new expense item</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+            </div>
+        </form>
+        {% if form.instance.id %}
+            <a type="button" style="margin:5px" class="btn btn-danger btn-sm" href="{% url 'accounting:expenseitems_delete' form.instance.id %}">Delete</a>
+        {% endif %}
+    </div>
+
+    <script type='text/javascript'>
+    
+        var drop = document.getElementById('id_item')
+        drop.addEventListener('change', function(event) {
+            // get value of id_item option
+            var op = document.getElementById('id_item');
+            var tt = op.selectedOptions[0].text;
+            // find number in it
+            var reg = /\d+\.\d+/;
+            var up = tt.match(reg)[0];
+            // get id of unit_price and set its value to up
+            var qty = document.getElementById('id_quantity');
+            qty.value = 1;
+            var net = document.getElementById('id_net_amount');
+            var vat = document.getElementById('id_vat');
+            var brut = document.getElementById('id_brut_amount');
+            brut.value = net.value*(1 + vat.value/100);
+        }, false);
+    
+        var qty = document.getElementById('id_quantity')
+        qty.addEventListener('change', function(event) {
+            // get value of id_item option
+            var qty = document.getElementById('id_quantity');
+            var net = document.getElementById('id_net_amount');
+            // find number in it
+            // get value of quantity
+            var vat = document.getElementById('id_vat');
+            var brut = document.getElementById('id_brut_amount');
+            brut.value = net.value*(1 + vat.value/100);
+        }, false);
+
+        var net = document.getElementById('id_net_amount')
+        net.addEventListener('change', function(event) {
+            // get value of id_item option
+            var net = document.getElementById('id_net_amount');
+            // find number in it
+            // get value of quantity
+            var vat = document.getElementById('id_vat');
+            var brut = document.getElementById('id_brut_amount');
+            brut.value = net.value*(1 + vat.value/100);
+        }, false);
+
+        var vat = document.getElementById('id_vat')
+        vat.addEventListener('change', function(event) {
+            var net = document.getElementById('id_net_amount');
+            var vat = document.getElementById('id_vat');
+            var brut = document.getElementById('id_brut_amount');
+            brut.value = net.value*(1 + vat.value/100);
+        }, false);
+        </script>
+    
+    
+{% endblock content %}

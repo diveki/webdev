@@ -45,3 +45,31 @@ urlpatterns += [
     path('dailyincome/list/', views.daily_income_aggregation_view, name='daily_income'),
     path('monthlyincome/list/', views.monthly_income_aggregation_view, name='monthly_income'),
 ]
+
+## add salary distribution path
+
+urlpatterns += [
+    path('salarydistribution/create/', views.SalaryDistributionCreate.as_view(), name='salarydistribution_create'), 
+    path('salarydistribution/list/', views.SalaryDistributionListView.as_view(), name='salarydistribution_list'),
+    path('salarydistribution/<int:pk>/update', views.SalaryDistributionUpdate.as_view(), name='salarydistribution_update'),
+    path('salarydistribution/<int:pk>/delete/', views.SalaryDistributionDelete.as_view(), name='salarydistribution_delete'),
+]
+
+## add salary path
+
+urlpatterns += [
+    # path('salary/create/', views.SalaryCreate.as_view(), name='salary_create'), 
+    path('salary/list/', views.SalaryListView.as_view(), name='salary_list'),
+    path('salary/<int:pk>/update', views.SalaryUpdate.as_view(), name='salary_update'),
+    path('salary/<int:pk>/delete/', views.SalaryDelete.as_view(), name='salary_delete'),
+    path('salary/monthly/', views.monthly_salary_view, name='salary_monthly'),
+]
+
+## add expense items path
+
+urlpatterns += [
+    path('expenseitems/create/', views.ExpenseItemsCreate.as_view(), name='expenseitems_create'),
+    path('expenseitems/list/', views.ExpenseItemsListView.as_view(), name='expenseitems_list'),
+    path('expenseitems/<int:pk>/update/', views.ExpenseItemsUpdate.as_view(), name='expenseitems_update'),
+    path('expenseitems/<int:pk>/delete/', views.ExpenseItemsDelete.as_view(), name='expenseitems_delete'),
+]

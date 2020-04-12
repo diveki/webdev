@@ -1,0 +1,173 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Salary vs Expenses</h1>
+<div class="row">
+    <button type="button" class="btn btn-light">User: {{ user }}</button>
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        {% if page_obj.has_next %}  
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Previous</a></li>
+        {% endif %}
+      <li class="page-item"><a class="page-link" href="#">{{page_obj.object_list.0}}</a></li>
+      <li class="page-item">
+        {% if page_obj.has_previous %}
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Next</a></li>
+        {% endif %}
+    </ul>
+  </nav>
+
+  {% if incomeitems_list %}
+
+
+      <div id="accordion">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Monthly Salary table
+              </button>
+            </h5>
+          </div>
+      
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <div class="col s12 m6 center-align">
+                    {{ div | safe }}
+                </div>
+            
+                <h1></h1>
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Categories</th>
+                        {% for value in col_header %}
+                            <th scope="col">{{value}}</th>
+                        {% endfor %}
+                       </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in incomeitems_list.items %}
+                            <tr>
+                                <th scope="row">   
+                                    {{ key }}
+                                </th>
+                                {% for item, price in value.items %}
+                                <td>{{ price|floatformat:-2 }}</td>
+                                {% endfor %}
+                            </tr>
+                      {% endfor %}
+                    </tbody>
+                
+                </table>
+          
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Monthly Expense table
+              </button>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                <div class="col s12 m6 center-align">
+                    {{ div_exp | safe }}
+                </div>
+            
+                <h1></h1>
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Categories</th>
+                        {% for value in col_header %}
+                            <th scope="col">{{value}}</th>
+                        {% endfor %}
+                       </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in expenseitems.items %}
+                            <tr>
+                                <th scope="row">   
+                                    {{ key }}
+                                </th>
+                                {% for item, price in value.items %}
+                                <td>{{ price|floatformat:-2 }}</td>
+                                {% endfor %}
+                            </tr>
+                      {% endfor %}
+                    </tbody>
+                
+                </table>
+          
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingThree">
+            <h5 class="mb-0">
+              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Net Monthly Income
+              </button>
+            </h5>
+          </div>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+                <div class="col s12 m6 center-align">
+                    {{ div_net | safe }}
+                </div>
+            
+                <h1></h1>
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Categories</th>
+                        {% for value in col_header %}
+                            <th scope="col">{{value}}</th>
+                        {% endfor %}
+                       </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in netincome.items %}
+                            <tr>
+                                <th scope="row">   
+                                    {{ key }}
+                                </th>
+                                {% for item, price in value.items %}
+                                <td>{{ price|floatformat:-2 }}</td>
+                                {% endfor %}
+                            </tr>
+                      {% endfor %}
+                    </tbody>
+                
+                </table>
+          
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  {% else %}
+    <p>There are no expense categories available.</p>
+  {% endif %}
+          
+          
+          
+  {% endblock %}
+  
+  {% block scripts %}
+  
+  {{ script | safe  }}
+  {{ script_exp | safe  }}
+  {{ script_net | safe  }}
+  
+{% endblock %}
+

@@ -46,7 +46,7 @@
         {% for key, value in incomeitems_list.items %}
             <tr>
                 <th scope="row">   
-                    {{ key|date:"Y-M-d" }}
+                    {{ key }}
                 </th>
                 {% for item, price in value.items %}
                 <td>{{ price }}</td>

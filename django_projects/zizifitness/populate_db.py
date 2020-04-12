@@ -160,4 +160,46 @@ def create_expense_categories():
         )
         ph.save()
 
+def create_salary_distribution_zizi():
+    items = IncomeCategories.objects.all()
+    ## zizi distribution
+    zizi = User.objects.get(id='2')
+    bonus = 1
+    btype = 'R'
+    for item in items:
+        ph = SalaryDistribution.objects.create(
+            instructor = zizi,
+            item = item,
+            bonus = bonus,
+            bonus_type = btype
+        )
+
+def create_salary_distribution_diveki():
+    items=IncomeCategories.objects.filter(category_type__name='InfraShape')
+    ## diveki distribution
+    user = User.objects.get(username='diveki')
+    bonus = 0.4
+    btype = 'R'
+    for item in items:
+        ph = SalaryDistribution.objects.create(
+            instructor = user,
+            item = item,
+            bonus = bonus,
+            bonus_type = btype
+        )
+
+def create_salary_distribution_trainer():
+    items=IncomeCategories.objects.filter(category_type__name='InfraShape')  | IncomeCategories.objects.filter(category_type__name='Speed Fitness')
+    ## trainer distribution
+    user = User.objects.get(username='trainer')
+    bonus = 100
+    btype = 'F'
+    for item in items:
+        ph = SalaryDistribution.objects.create(
+            instructor = user,
+            item = item,
+            bonus = bonus,
+            bonus_type = btype
+        )
+
 

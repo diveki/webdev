@@ -24,104 +24,14 @@
         <h4>To see the content you have to login and have permission!</h4>
     {% endif %}
   
+    <div class="col s12 m6 center-align">
+        {{ div | safe }}
+    </div>
     
 
-    <script src="https://d3js.org/d3.v3.js"></script>
-    <script type='text/javascript'>
-    
-    var data= {{physical_appearance|safe}}
-    
-    var margin = {top: 20, right: 20, bottom: 90, left: 100},
-        width = 560 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
-    
-    var parseDate = d3.time.format("%Y-%m-%d").parse; // for dates like "2014-01-01"
-    //var parseDate = d3.time.format("%Y-%m-%dT00:00:00Z").parse;  // for dates like "2014-01-01T00:00:00Z"
-    
-    var x = d3.time.scale()
-        .range([0, width]);
-    
-    var y = d3.scale.linear()
-        .range([height, 0]);
-    
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
-    
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        // .innerTickSize(-width)
-        .orient("left");
-    
-    var line = d3.svg.line()
-        .x(function(d) { return x(d.month); })
-        .y(function(d) { return y(d.count_items); });
-    
-    var svg = d3.select("#my_dataviz").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-        var yGridLine = d3.svg.axis()
-            .scale(y)
-            .tickSize(-width, 0 ,0)
-            .tickFormat("")
-            .orient("left");
-            
-        data.forEach(function(d) {
-            d.month = parseDate(d.date)
-            // d.month = d3.timeParse("%Y-%m-%d")(d.date)
-            d.count_items = d.weight
-        });
-      
-        x.domain(d3.extent(data, function(d) { return d.month; }));
-        y.domain(d3.extent(data, function(d) { return d.count_items; }));
-      
-
-        
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis)
-        .selectAll("text")
-            .attr("transform", "translate(0," + height + ")")
-            .attr("transform", "rotate(50, -30,30)");
-
-        svg.append("g")
-            .classed("gridLine", true)
-            .attr("transform", "translate(0,0)")
-            .call(yGridLine);
-            
-      
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            // .attr("transform", "rotate(-90)")
-            .attr("transform", function(d) {
-    return "translate(" + -70 + "," + this.parentNode.getBBox().height / 3.5 + ") rotate(-90)";
-  })
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Body weight (kg)");
-      
-
-        svg.append("path")
-            .datum(data)
-            .attr("class", "line")
-            // .style("stroke-dotarray", ("3,3"))
-            .attr("fill", "#cce5df")
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 1.5)
-            .attr("d", d3.svg.area()
-        .x(function(d) { return x(d.month) })
-        .y0(height)
-        .y1(function(d) { return y(d.count_items) }));
-     
-
-    </script>
-    
 {% endblock %}
 
+{% block scripts %}
+
+{{ script | safe  }}
+{% endblock %}
